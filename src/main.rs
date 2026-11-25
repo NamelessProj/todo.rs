@@ -63,6 +63,10 @@ struct Task {
     description: Option<String>,
 }
 
+fn next_id(todos: &[Task]) -> u32 {
+    todos.iter().map(|t| t.id).max().unwrap_or(0) + 1
+}
+
 fn main() -> Result<()> {
     let cli = Cli::parse();
 
@@ -71,22 +75,13 @@ fn main() -> Result<()> {
     match cli.command {
         Commands::Add(add_task) => {
             let task = Task {
-                id: todos.len() as u32 + 1, // Simple ID generation
+                id: next_id(&todos),
                 name: add_task.task,
                 is_done: add_task.is_done,
                 description: add_task.description,
             };
 
             todos.push(task.clone());
-
-            println!("Add command: {:?}", task.name);
-            println!("Is done: {:?}", task.is_done);
-
-            if let Some(desc) = task.description {
-                println!("Description: {:?}", desc);
-            } else {
-                println!("No description provided.");
-            }
         }
 
         Commands::Toggle(toggle_task) => {
