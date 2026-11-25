@@ -46,6 +46,7 @@ struct RemoveTask {
 
 #[derive(Args, Debug)]
 struct ShowTask {
+    /// Optional ID of the task to show. If not provided, all tasks will be shown.
     #[arg(short, long)]
     id: Option<u32>,
 }
@@ -100,7 +101,7 @@ fn main() {
 
             println!("Remove command: {:?}", task.id);
         }
-        
+
         Commands::Show(show_task) => {
             if let Some(id) = show_task.id {
                 let task = Task {
