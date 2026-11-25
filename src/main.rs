@@ -85,14 +85,16 @@ fn main() -> Result<()> {
         }
 
         Commands::Toggle(toggle_task) => {
-            let task = Task {
-                id: 0, // This would typically be generated
-                name: "Sample Task".into(),
-                is_done: toggle_task.is_done,
-                description: None,
-            };
+            if let Some(task) = todos.iter().find(|t| t.id == toggle_task.id) {
+                let mut updated_task = task.clone();
+                updated_task.is_done = toggle_task.is_done;
 
-            println!("Toggle command: {:?}", task.is_done);
+                if let Some(pos) = todos.iter().position(|t| t.id == toggle_task.id) {
+                    todos[pos] = updated_task;
+                }
+            } else {
+                println!("Task with ID {} not found.", toggle_task.id);
+            }
         }
 
         Commands::Remove(remove_task) => {
