@@ -12,10 +12,12 @@ struct Cli {
 enum Commands {
     Add(AddTask),
     Toggle(ToggleTask),
+    Remove(RemoveTask),
 }
 
 #[derive(Args, Debug)]
 struct AddTask {
+    /// The name of the task to add
     #[arg(short, long)]
     task: String,
 
@@ -33,6 +35,12 @@ struct ToggleTask {
 
     #[arg(long)]
     is_done: bool,
+}
+
+#[derive(Args, Debug)]
+struct RemoveTask {
+    #[arg(short, long)]
+    id: u32,
 }
 
 struct Task {
@@ -72,6 +80,16 @@ fn main() {
             };
 
             println!("Toggle command: {:?}", task.is_done);
+        }
+        Commands::Remove(remove_task) => {
+            let task = Task {
+                id: remove_task.id,
+                name: "Sample Task".into(),
+                is_done: false,
+                description: None,
+            };
+
+            println!("Remove command: {:?}", task.id);
         }
     }
 
