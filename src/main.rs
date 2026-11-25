@@ -1,8 +1,9 @@
-use clap::{Args, Parser, Subcommand};
+use clap::{ArgGroup, Args, Parser, Subcommand};
 use serde::{Deserialize, Serialize};
 use std::{fmt, io::Result};
 
 mod file;
+mod help;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -18,6 +19,7 @@ enum Commands {
     Toggle(ToggleTask),
     Remove(RemoveTask),
     Show(ShowTask),
+    Search(Search),
 }
 
 #[derive(Args, Debug)]
@@ -53,6 +55,22 @@ struct ShowTask {
     /// Optional ID of the task to show. If not provided, all tasks will be shown.
     #[arg(short, long)]
     id: Option<u32>,
+}
+
+#[derive(Args, Debug)]
+#[command(group(ArgGroup::new("target").required(true).args(["id", "text"])))]
+struct Search {
+    #[arg(short, long)]
+    id: Option<u32>,
+
+    #[arg(long)]
+    text: Option<String>,
+
+    #[arg(long, requires = "text")]
+    name: bool,
+
+    #[arg(long, requires = "text")]
+    description: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -140,6 +158,20 @@ fn main() -> Result<()> {
                 }
             } else {
                 print_tasks(&todos);
+            }
+        }
+
+        Commands::Search(search) => {
+            need_saving = false;
+
+            let found = help::search(&todos, &search);
+
+            if found.is_empty() {
+                println!("Nothing found.");
+            } else {
+                for t in found {
+                    println!("{t}");
+                }
             }
         }
     }
