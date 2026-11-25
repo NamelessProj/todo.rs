@@ -98,14 +98,11 @@ fn main() -> Result<()> {
         }
 
         Commands::Remove(remove_task) => {
-            let task = Task {
-                id: remove_task.id,
-                name: "Sample Task".into(),
-                is_done: false,
-                description: None,
-            };
-
-            println!("Remove command: {:?}", task.id);
+            if let Some(_task) = todos.iter().find(|t| t.id == remove_task.id) {
+                todos.retain(|t| t.id != remove_task.id);
+            } else {
+                println!("Task with ID {} not found.", remove_task.id);
+            }
         }
 
         Commands::Show(show_task) => {
