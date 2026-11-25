@@ -1,6 +1,6 @@
 use clap::{Args, Parser, Subcommand};
 use serde::{Deserialize, Serialize};
-use std::{io::Result};
+use std::{fmt, io::Result};
 
 mod file;
 
@@ -63,6 +63,30 @@ struct Task {
     description: Option<String>,
 }
 
+impl fmt::Display for Task {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let mark = if self.is_done { "x" } else { " " };
+        write!(f, "[{}] #{} {}", mark, self.id, self.name)?;
+
+        if let Some(desc) = &self.description {
+            write!(f, "\n    {}", desc)?;
+        }
+
+        Ok(())
+    }
+}
+
+fn print_tasks(tasks: &[Task]) {
+    if tasks.is_empty() {
+        println!("No tasks yet.");
+        return;
+    }
+
+    for task in tasks {
+        println!("{task}");
+    }
+}
+
 fn next_id(todos: &[Task]) -> u32 {
     todos.iter().map(|t| t.id).max().unwrap_or(0) + 1
 }
@@ -107,16 +131,13 @@ fn main() -> Result<()> {
 
         Commands::Show(show_task) => {
             if let Some(id) = show_task.id {
-                let task = Task {
-                    id,
-                    name: "Sample Task".into(),
-                    is_done: false,
-                    description: None,
-                };
-
-                println!("Show command for task ID: {:?}", task.id);
+                if let Some(task) = todos.iter().find(|t| t.id == id) {
+                    println!("{}", task);
+                } else {
+                    println!("No task with the ID: {}", id);
+                }
             } else {
-                println!("Show command for all tasks.");
+                print_tasks(&todos);
             }
         }
     }
