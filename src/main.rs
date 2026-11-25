@@ -1,4 +1,8 @@
 use clap::{Args, Parser, Subcommand};
+use serde::{Deserialize, Serialize};
+use std::{io::Result};
+
+mod file;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -51,6 +55,7 @@ struct ShowTask {
     id: Option<u32>,
 }
 
+#[derive(Serialize, Deserialize, Debug, Clone)]
 struct Task {
     id: u32,
     name: String,
@@ -58,17 +63,21 @@ struct Task {
     description: Option<String>,
 }
 
-fn main() {
+fn main() -> Result<()> {
     let cli = Cli::parse();
+
+    let mut todos = file::load()?;
 
     match cli.command {
         Commands::Add(add_task) => {
             let task = Task {
-                id: 0, // This would typically be generated
+                id: todos.len() as u32 + 1, // Simple ID generation
                 name: add_task.task,
                 is_done: add_task.is_done,
                 description: add_task.description,
             };
+
+            todos.push(task.clone());
 
             println!("Add command: {:?}", task.name);
             println!("Is done: {:?}", task.is_done);
@@ -118,4 +127,7 @@ fn main() {
         }
     }
 
+    file::save(&todos)?;
+
+    Ok(())
 }
