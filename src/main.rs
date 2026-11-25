@@ -93,8 +93,8 @@ fn next_id(todos: &[Task]) -> u32 {
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
-
     let mut todos = file::load()?;
+    let mut need_saving = true;
 
     match cli.command {
         Commands::Add(add_task) => {
@@ -130,6 +130,8 @@ fn main() -> Result<()> {
         }
 
         Commands::Show(show_task) => {
+            need_saving = false;
+
             if let Some(id) = show_task.id {
                 if let Some(task) = todos.iter().find(|t| t.id == id) {
                     println!("{}", task);
@@ -142,7 +144,9 @@ fn main() -> Result<()> {
         }
     }
 
-    file::save(&todos)?;
+    if need_saving {
+        file::save(&todos)?;
+    }
 
     Ok(())
 }
