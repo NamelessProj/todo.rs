@@ -13,6 +13,7 @@ enum Commands {
     Add(AddTask),
     Toggle(ToggleTask),
     Remove(RemoveTask),
+    Show(ShowTask),
 }
 
 #[derive(Args, Debug)]
@@ -43,6 +44,12 @@ struct RemoveTask {
     id: u32,
 }
 
+#[derive(Args, Debug)]
+struct ShowTask {
+    #[arg(short, long)]
+    id: Option<u32>,
+}
+
 struct Task {
     id: u32,
     name: String,
@@ -71,6 +78,7 @@ fn main() {
                 println!("No description provided.");
             }
         }
+
         Commands::Toggle(toggle_task) => {
             let task = Task {
                 id: 0, // This would typically be generated
@@ -81,6 +89,7 @@ fn main() {
 
             println!("Toggle command: {:?}", task.is_done);
         }
+
         Commands::Remove(remove_task) => {
             let task = Task {
                 id: remove_task.id,
@@ -90,6 +99,21 @@ fn main() {
             };
 
             println!("Remove command: {:?}", task.id);
+        }
+        
+        Commands::Show(show_task) => {
+            if let Some(id) = show_task.id {
+                let task = Task {
+                    id,
+                    name: "Sample Task".into(),
+                    is_done: false,
+                    description: None,
+                };
+
+                println!("Show command for task ID: {:?}", task.id);
+            } else {
+                println!("Show command for all tasks.");
+            }
         }
     }
 
