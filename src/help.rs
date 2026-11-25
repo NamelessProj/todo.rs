@@ -15,3 +15,18 @@ pub fn search<'a>(tasks: &'a [super::Task], q: &super::Search) -> Vec<&'a super:
         (in_name && t.name.to_lowercase().contains(&text)) || (in_desc && t.description.as_ref().is_some_and(|d| d.to_lowercase().contains(&text)))
     }).collect()
 }
+
+pub fn print_tasks(tasks: &[super::Task]) {
+    if tasks.is_empty() {
+        println!("No tasks yet.");
+        return;
+    }
+
+    for task in tasks {
+        println!("{task}");
+    }
+}
+
+pub fn next_id(todos: &[super::Task]) -> u32 {
+    todos.iter().map(|t| t.id).max().unwrap_or(0) + 1
+}

@@ -94,21 +94,6 @@ impl fmt::Display for Task {
     }
 }
 
-fn print_tasks(tasks: &[Task]) {
-    if tasks.is_empty() {
-        println!("No tasks yet.");
-        return;
-    }
-
-    for task in tasks {
-        println!("{task}");
-    }
-}
-
-fn next_id(todos: &[Task]) -> u32 {
-    todos.iter().map(|t| t.id).max().unwrap_or(0) + 1
-}
-
 fn main() -> Result<()> {
     let cli = Cli::parse();
     let mut todos = file::load()?;
@@ -117,7 +102,7 @@ fn main() -> Result<()> {
     match cli.command {
         Commands::Add(add_task) => {
             let task = Task {
-                id: next_id(&todos),
+                id: help::next_id(&todos),
                 name: add_task.task,
                 is_done: add_task.is_done,
                 description: add_task.description,
@@ -157,7 +142,7 @@ fn main() -> Result<()> {
                     println!("No task with the ID: {}", id);
                 }
             } else {
-                print_tasks(&todos);
+                help::print_tasks(&todos);
             }
         }
 
