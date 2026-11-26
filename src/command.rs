@@ -24,13 +24,13 @@ pub struct Add {
 pub struct Edit {
     pub id: u32,
 
-    #[arg(long)]
+    #[arg(short, long)]
     pub name: Option<String>,
 
-    #[arg(long)]
+    #[arg(short, long)]
     pub description: Option<String>,
 
-    #[arg(long, value_enum)]
+    #[arg(short, long, value_enum)]
     pub status: Option<Status>,
 }
 
@@ -39,7 +39,7 @@ pub struct Mark {
     pub id: u32,
 
     /// Set the status (by default "done")
-    #[arg(long)]
+    #[arg(short, long)]
     pub status: Option<Status>,
 }
 
@@ -60,12 +60,12 @@ pub struct Search {
     #[arg(short, long)]
     pub id: Option<u32>,
 
-    #[arg(long)]
+    #[arg(short, long)]
     pub text: Option<String>,
 
-    #[arg(long, requires = "text")]
+    #[arg(short, long, requires = "text")]
     pub name: bool,
 
-    #[arg(long, requires = "text")]
+    #[arg(short, long, requires = "text")]
     pub description: bool,
 }
