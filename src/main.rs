@@ -88,18 +88,18 @@ fn main() -> Result<()> {
             }
         }
 
-        Commands::Remove(remove_task) => {
-            if let Some(_task) = todos.iter().find(|t| t.id == remove_task.id) {
-                todos.retain(|t| t.id != remove_task.id);
+        Commands::Remove(remove) => {
+            if let Some(_task) = todos.iter().find(|t| t.id == remove.id) {
+                todos.retain(|t| t.id != remove.id);
             } else {
-                println!("Task with ID {} not found.", remove_task.id);
+                println!("Task with ID {} not found.", remove.id);
             }
         }
 
-        Commands::Show(show_task) => {
+        Commands::Show(show) => {
             need_saving = false;
 
-            if let Some(id) = show_task.id {
+            if let Some(id) = show.id {
                 if let Some(task) = todos.iter().find(|t| t.id == id) {
                     println!("{}", task);
                 } else {
