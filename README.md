@@ -102,7 +102,7 @@ The file is created the first time you run a command that needs it. It looks lik
 ]
 ```
 
-You can edit it by hand, as long as it's stays valid JSON.é
+You can edit it by hand, as long as it's stays valid JSON.
 
 A new task gets the highest current ID plus one, so if you remove the last task, it's number is used again.
 
