@@ -1,7 +1,8 @@
-use clap::{ArgGroup, Args, Parser, Subcommand};
+use clap::{Parser, Subcommand};
 use serde::{Deserialize, Serialize};
 use std::{fmt, io::Result};
 
+mod command;
 mod file;
 mod help;
 
@@ -15,64 +16,11 @@ struct Cli {
 
 #[derive(Subcommand, Debug)]
 enum Commands {
-    Add(AddTask),
-    Mark(MarkTask),
-    Remove(RemoveTask),
-    Show(ShowTask),
-    Search(Search),
-}
-
-#[derive(Args, Debug)]
-struct AddTask {
-    /// The name of the task to add
-    task: String,
-
-    #[arg(short, long)]
-    description: Option<String>,
-
-    /// Marked the task as done
-    #[arg(long, default_value_t = false)]
-    done: bool,
-}
-
-#[derive(Args, Debug)]
-struct MarkTask {
-    id: u32,
-
-    /// Mark the task as done (by default if neither "done" or "undone" is set)
-    #[arg(long, conflicts_with = "undone")]
-    done: bool,
-
-    /// Mark the task as undone
-    #[arg(long)]
-    undone: bool,
-}
-
-#[derive(Args, Debug)]
-struct RemoveTask {
-    id: u32,
-}
-
-#[derive(Args, Debug)]
-struct ShowTask {
-    /// Optional ID of the task to show. If not provided, all tasks will be shown.
-    id: Option<u32>,
-}
-
-#[derive(Args, Debug)]
-#[command(group(ArgGroup::new("target").required(true).args(["id", "text"])))]
-struct Search {
-    #[arg(short, long)]
-    id: Option<u32>,
-
-    #[arg(long)]
-    text: Option<String>,
-
-    #[arg(long, requires = "text")]
-    name: bool,
-
-    #[arg(long, requires = "text")]
-    description: bool,
+    Add(command::Add),
+    Mark(command::Mark),
+    Remove(command::Remove),
+    Show(command::Show),
+    Search(command::Search),
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

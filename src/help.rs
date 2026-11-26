@@ -1,4 +1,6 @@
-pub fn search<'a>(tasks: &'a [super::Task], q: &super::Search) -> Vec<&'a super::Task> {
+use crate::command::Search;
+
+pub fn search<'a>(tasks: &'a [super::Task], q: &Search) -> Vec<&'a super::Task> {
     if let Some(id) = q.id {
         return tasks.iter().filter(|t| t.id == id).collect();
     }
