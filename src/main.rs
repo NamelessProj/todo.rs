@@ -16,7 +16,7 @@ struct Cli {
 #[derive(Subcommand, Debug)]
 enum Commands {
     Add(AddTask),
-    Toggle(ToggleTask),
+    Mark(MarkTask),
     Remove(RemoveTask),
     Show(ShowTask),
     Search(Search),
@@ -25,35 +25,37 @@ enum Commands {
 #[derive(Args, Debug)]
 struct AddTask {
     /// The name of the task to add
-    #[arg(short, long)]
     task: String,
 
     #[arg(short, long)]
     description: Option<String>,
 
+    /// Marked the task as done
     #[arg(long, default_value_t = false)]
     done: bool,
 }
 
 #[derive(Args, Debug)]
-struct ToggleTask {
-    #[arg(short, long)]
+struct MarkTask {
     id: u32,
 
-    #[arg(long)]
+    /// Mark the task as done (by default if neither "done" or "undone" is set)
+    #[arg(long, conflicts_with = "undone")]
     done: bool,
+
+    /// Mark the task as undone
+    #[arg(long)]
+    undone: bool,
 }
 
 #[derive(Args, Debug)]
 struct RemoveTask {
-    #[arg(short, long)]
     id: u32,
 }
 
 #[derive(Args, Debug)]
 struct ShowTask {
     /// Optional ID of the task to show. If not provided, all tasks will be shown.
-    #[arg(short, long)]
     id: Option<u32>,
 }
 
@@ -111,16 +113,16 @@ fn main() -> Result<()> {
             todos.push(task.clone());
         }
 
-        Commands::Toggle(toggle_task) => {
-            if let Some(task) = todos.iter().find(|t| t.id == toggle_task.id) {
+        Commands::Mark(mark) => {
+            if let Some(task) = todos.iter().find(|t| t.id == mark.id) {
                 let mut updated_task = task.clone();
-                updated_task.done = toggle_task.done;
+                updated_task.done = !mark.undone;
 
-                if let Some(pos) = todos.iter().position(|t| t.id == toggle_task.id) {
+                if let Some(pos) = todos.iter().position(|t| t.id == mark.id) {
                     todos[pos] = updated_task;
                 }
             } else {
-                println!("Task with ID {} not found.", toggle_task.id);
+                println!("Task with ID {} not found.", mark.id);
             }
         }
 
