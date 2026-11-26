@@ -13,7 +13,7 @@ cd todo.rs
 cargo install --path .
 ```
 
-This gives you a `todo.rs` command. If you'd rather not install it, run it from the project folder with `cargo run --` followed by the command, for example `cargo run -- show`.
+This gives you a `todo.rs` command. If you'd rather not install it, run it from the project folder with `cargo run --` followed by the command, for example `cargo run -- print`.
 
 
 ## A Quick Tour
@@ -21,17 +21,28 @@ This gives you a `todo.rs` command. If you'd rather not install it, run it from 
 ```sh
 $ todo.rs add "Buy milk"
 $ todo.rs add "Write the report" --description "Due Friday"
-$ todo.rs toggle 1 --done
-$ todo.rs show
+$ todo.rs mark 1
+$ todo.rs print
 [x] #1 Buy milk
 [ ] #2 Write the report
     Due Friday
 ```
 
-Adding, toggling and removing print nothing when they work. Use `show` to see the result.
+Adding, toggling and removing print nothing when they work. Use `print` to see the result.
 
 
 ## Commands
+
+| Command | What it does |
+| --- | --- |
+| `add <NAME>` | Add a task |
+| `edit <ID>` | Change a task's name, description or status |
+| `mark <ID>` | Mark a task as done or not done |
+| `print [ID]` | Show all taks or just one |
+| `search` | Find tasks by ID or text |
+| `remove <ID>` | Delete a task |
+
+A status is either `done` or `undone`.
 
 
 ### Add A Task
@@ -39,25 +50,38 @@ Adding, toggling and removing print nothing when they work. Use `show` to see th
 ```sh
 todo.rs add "Call the dentist"
 todo.rs add "Call the dentist" -d "Ask about Tuesday"
-todo.rs add "Water the planr" --done      # already done
+todo.rs add "Water the planr" -s done       # already done
 ```
 
+New tasks are not done unless you say otherwise.
 
-### Mark A Task Done Or Not Done
+
+## Edit A Task
 
 ```sh
-todo.rs toggle 1 --done      # done
-todo.rs toggle 1             # not done
+todo.rs edit 1 --name "Buy oat milk"
+todo.rs edit 1 -d "Two cartons"
+todo.rs edit 1 -s undone
+todo.rs edit 1 -n "Buy bread" -s done       # several changes at once
 ```
 
-Despite it's name, `toggle` doesn't flip the current state. It's sets it: with `--done` the task is done, without it the task is open again.
+Gives at least one of `--name`, `--description` or `--status`. Anything you leave out stays as it is.
 
 
-### Show Tasks
+### Mark A Task
+
+```sh
+todo.rs mark 1              # done
+todo.rs mark 1 -s done      # also done
+todo.rs mark 1 -s undone    # not done
+```
+
+
+### Print Tasks
 
 ```sh 
-todo.rs show        # everything
-todo.rs show 2      # just task #2
+todo.rs print       # everything
+todo.rs print 2     # just task #2
 ```
 
 
@@ -70,7 +94,7 @@ todo.rs search --text friday --description      # in descriptions only
 todo.rs search -i 2                             # by ID
 ```
 
-Text search ignores case and matches parts of words. Search by `--id` or by `--text`, one at a time.
+Text search ignores case and matches parts of words. Search by `--id` or by `--text`, one at a time. `--name` and `--description` only work with `--text`.
 
 
 ### Remove A Task
@@ -82,7 +106,10 @@ todo.rs remove 2
 > [!WARNING]
 > There's no undo!
 
-Run `todo.rs --help` or `todo.rs <COMMAND> --help`, to see the available options.
+
+### Help
+
+Run `todo.rs --help` or `todo.rs <COMMAND> --help`, to see the available options. `todo.rs --version` shows the version.
 
 
 ## Where Your Tasks Are Saved
@@ -111,7 +138,8 @@ A new task gets the highest current ID plus one, so if you remove the last task,
 
 | File | What's in it |
 | ---- | --- |
-| `src/main.rs` | Command definitions and what they do |
+| `src/main.rs` | The `Task` type and what ech command does |
+| `src/command.rs` | Command arguments and options |
 | `src/file.rs` | Loading and saving `todo.json` |
 | `src/help.rs` | Search, printing and ID numbering |
 
