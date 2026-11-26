@@ -19,9 +19,9 @@ This gives you a `todo.rs` command. If you'd rather not install it, run it from 
 ## A Quick Tour
 
 ```sh
-$ todo.rs add --task "Buy milk"
-$ todo.rs add --task "Write the report" --description "Due Friday"
-$ todo.rs toggle --id 1 --done
+$ todo.rs add "Buy milk"
+$ todo.rs add "Write the report" --description "Due Friday"
+$ todo.rs toggle 1 --done
 $ todo.rs show
 [x] #1 Buy milk
 [ ] #2 Write the report
@@ -37,17 +37,17 @@ Adding, toggling and removing print nothing when they work. Use `show` to see th
 ### Add A Task
 
 ```sh
-todo.rs add -t "Call the dentist"
-todo.rs add -t "Call the dentist" -d "Ask about Tuesday"
-todo.rs add -t "Water the planr" --done      # already done
+todo.rs add "Call the dentist"
+todo.rs add "Call the dentist" -d "Ask about Tuesday"
+todo.rs add "Water the planr" --done      # already done
 ```
 
 
 ### Mark A Task Done Or Not Done
 
 ```sh
-todo.rs toggle -i 1 --done      # done
-todo.rs toggle -i 1             # not done
+todo.rs toggle 1 --done      # done
+todo.rs toggle 1             # not done
 ```
 
 Despite it's name, `toggle` doesn't flip the current state. It's sets it: with `--done` the task is done, without it the task is open again.
@@ -57,7 +57,7 @@ Despite it's name, `toggle` doesn't flip the current state. It's sets it: with `
 
 ```sh 
 todo.rs show        # everything
-todo.rs show -i 2   # just task #2
+todo.rs show 2      # just task #2
 ```
 
 
@@ -76,7 +76,7 @@ Text search ignores case and matches parts of words. Search by `--id` or by `--t
 ### Remove A Task
 
 ```sh
-todo.rs remove -i 2
+todo.rs remove 2
 ```
 
 > [!WARNING]
