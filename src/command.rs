@@ -9,14 +9,14 @@ pub enum Status {
 #[derive(Args, Debug)]
 pub struct Add {
     /// The name of the task to add
-    pub task: String,
+    pub name: String,
 
     #[arg(short, long)]
     pub description: Option<String>,
 
     /// Marked the task as done
-    #[arg(long, default_value_t = false)]
-    pub done: bool,
+    #[arg(short, long)]
+    pub status: Option<Status>,
 }
 
 #[derive(Args, Debug)]

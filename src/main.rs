@@ -51,12 +51,12 @@ fn main() -> Result<()> {
     let mut need_saving = true;
 
     match cli.command {
-        Commands::Add(add_task) => {
+        Commands::Add(add) => {
             let task = Task {
                 id: help::next_id(&todos),
-                name: add_task.task,
-                done: add_task.done,
-                description: add_task.description,
+                name: add.name,
+                done: !add.status.is_none_or(|s| matches!(s, command::Status::Undone)),
+                description: add.description,
             };
 
             todos.push(task.clone());
