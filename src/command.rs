@@ -49,8 +49,8 @@ pub struct Remove {
 }
 
 #[derive(Args, Debug)]
-pub struct Show {
-    /// Optional ID of the task to show. If not provided, all tasks will be shown.
+pub struct Print {
+    /// Optional ID of the task to print. If not provided, all tasks will be prints.
     pub id: Option<u32>,
 }
 

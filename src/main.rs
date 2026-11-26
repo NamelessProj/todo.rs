@@ -20,7 +20,7 @@ enum Commands {
     Edit(command::Edit),
     Mark(command::Mark),
     Remove(command::Remove),
-    Show(command::Show),
+    Print(command::Print),
     Search(command::Search),
 }
 
@@ -96,10 +96,10 @@ fn main() -> Result<()> {
             }
         }
 
-        Commands::Show(show) => {
+        Commands::Print(print) => {
             need_saving = false;
 
-            if let Some(id) = show.id {
+            if let Some(id) = print.id {
                 if let Some(task) = todos.iter().find(|t| t.id == id) {
                     println!("{}", task);
                 } else {
