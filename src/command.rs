@@ -38,13 +38,9 @@ pub struct Edit {
 pub struct Mark {
     pub id: u32,
 
-    /// Mark the task as done (by default if neither "done" or "undone" is set)
-    #[arg(long, conflicts_with = "undone")]
-    pub done: bool,
-
-    /// Mark the task as undone
+    /// Set the status (by default "done")
     #[arg(long)]
-    pub undone: bool,
+    pub status: Option<Status>,
 }
 
 #[derive(Args, Debug)]
