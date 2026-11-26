@@ -17,6 +17,7 @@ struct Cli {
 #[derive(Subcommand, Debug)]
 enum Commands {
     Add(command::Add),
+    Edit(command::Edit),
     Mark(command::Mark),
     Remove(command::Remove),
     Show(command::Show),
@@ -59,6 +60,30 @@ fn main() -> Result<()> {
             };
 
             todos.push(task.clone());
+        }
+
+        Commands::Edit(edit) => {
+            if let Some(task) = todos.iter().find(|t| t.id == edit.id) {
+                let mut updated_task = task.clone();
+
+                if let Some(name) = edit.name {
+                    updated_task.name = name;
+                }
+
+                if let Some(desc) = edit.description {
+                    updated_task.description = Some(desc);
+                }
+
+                if let Some(status) = edit.status {
+                    updated_task.done = matches!(status, command::Status::Done);
+                }
+
+                if let Some(pos) = todos.iter().position(|t| t.id == edit.id) {
+                    todos[pos] = updated_task;
+                }
+            } else {
+                println!("Task with ID {} not found.", edit.id);
+            }
         }
 
         Commands::Mark(mark) => {
