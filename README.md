@@ -13,16 +13,16 @@ cd todo.rs
 cargo install --path .
 ```
 
-This gives you a `todo.rs` command. If you'd rather not install it, run it from the project folder with `cargo run --` followed by the command, for example `cargo run -- print`.
+This gives you a `todo_rs` command. If you'd rather not install it, run it from the project folder with `cargo run --` followed by the command, for example `cargo run -- print`.
 
 
 ## A Quick Tour
 
 ```sh
-$ todo.rs add "Buy milk"
-$ todo.rs add "Write the report" --description "Due Friday"
-$ todo.rs mark 1
-$ todo.rs print
+$ todo_rs add "Buy milk"
+$ todo_rs add "Write the report" --description "Due Friday"
+$ todo_rs mark 1
+$ todo_rs print
 [x] #1 Buy milk
 [ ] #2 Write the report
     Due Friday
@@ -48,9 +48,9 @@ A status is either `done` or `undone`.
 ### Add A Task
 
 ```sh
-todo.rs add "Call the dentist"
-todo.rs add "Call the dentist" -d "Ask about Tuesday"
-todo.rs add "Water the planr" -s done       # already done
+todo_rs add "Call the dentist"
+todo_rs add "Call the dentist" -d "Ask about Tuesday"
+todo_rs add "Water the planr" -s done       # already done
 ```
 
 New tasks are not done unless you say otherwise.
@@ -59,10 +59,10 @@ New tasks are not done unless you say otherwise.
 ## Edit A Task
 
 ```sh
-todo.rs edit 1 --name "Buy oat milk"
-todo.rs edit 1 -d "Two cartons"
-todo.rs edit 1 -s undone
-todo.rs edit 1 -n "Buy bread" -s done       # several changes at once
+todo_rs edit 1 --name "Buy oat milk"
+todo_rs edit 1 -d "Two cartons"
+todo_rs edit 1 -s undone
+todo_rs edit 1 -n "Buy bread" -s done       # several changes at once
 ```
 
 Gives at least one of `--name`, `--description` or `--status`. Anything you leave out stays as it is.
@@ -71,27 +71,27 @@ Gives at least one of `--name`, `--description` or `--status`. Anything you leav
 ### Mark A Task
 
 ```sh
-todo.rs mark 1              # done
-todo.rs mark 1 -s done      # also done
-todo.rs mark 1 -s undone    # not done
+todo_rs mark 1              # done
+todo_rs mark 1 -s done      # also done
+todo_rs mark 1 -s undone    # not done
 ```
 
 
 ### Print Tasks
 
 ```sh 
-todo.rs print       # everything
-todo.rs print 2     # just task #2
+todo_rs print       # everything
+todo_rs print 2     # just task #2
 ```
 
 
 ### Search
 
 ```sh
-todo.rs search --text report                    # in names and description
-todo.rs search --text report --name             # in names only
-todo.rs search --text friday --description      # in descriptions only
-todo.rs search -i 2                             # by ID
+todo_rs search --text report                    # in names and description
+todo_rs search --text report --name             # in names only
+todo_rs search --text friday --description      # in descriptions only
+todo_rs search -i 2                             # by ID
 ```
 
 Text search ignores case and matches parts of words. Search by `--id` or by `--text`, one at a time. `--name` and `--description` only work with `--text`.
@@ -100,7 +100,7 @@ Text search ignores case and matches parts of words. Search by `--id` or by `--t
 ### Remove A Task
 
 ```sh
-todo.rs remove 2
+todo_rs remove 2
 ```
 
 > [!WARNING]
@@ -109,7 +109,7 @@ todo.rs remove 2
 
 ### Help
 
-Run `todo.rs --help` or `todo.rs <COMMAND> --help`, to see the available options. `todo.rs --version` shows the version.
+Run `todo_rs --help` or `todo_rs <COMMAND> --help`, to see the available options. `todo_rs --version` shows the version.
 
 
 ## Where Your Tasks Are Saved
