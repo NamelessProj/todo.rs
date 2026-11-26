@@ -1,4 +1,10 @@
-use clap::{ArgGroup, Args};
+use clap::{ArgGroup, Args, ValueEnum};
+
+#[derive(Clone, Debug, ValueEnum)]
+pub enum Status {
+    Done,
+    Undone,
+}
 
 #[derive(Args, Debug)]
 pub struct Add {
@@ -11,6 +17,21 @@ pub struct Add {
     /// Marked the task as done
     #[arg(long, default_value_t = false)]
     pub done: bool,
+}
+
+#[derive(Args, Debug)]
+#[command(group(ArgGroup::new("changes").required(true).multiple(true).args(["name", "description", "status"])))]
+pub struct Edit {
+    pub id: u32,
+
+    #[arg(long)]
+    pub name: Option<String>,
+
+    #[arg(long)]
+    pub description: Option<String>,
+
+    #[arg(long, value_enum)]
+    pub status: Option<Status>,
 }
 
 #[derive(Args, Debug)]
