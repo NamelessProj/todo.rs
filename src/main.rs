@@ -89,7 +89,8 @@ fn main() -> Result<()> {
         Commands::Mark(mark) => {
             if let Some(task) = todos.iter().find(|t| t.id == mark.id) {
                 let mut updated_task = task.clone();
-                updated_task.done = !mark.undone;
+
+                updated_task.done = mark.status.is_none_or(|s| matches!(s, command::Status::Done));
 
                 if let Some(pos) = todos.iter().position(|t| t.id == mark.id) {
                     todos[pos] = updated_task;
