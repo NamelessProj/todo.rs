@@ -63,23 +63,17 @@ fn main() -> Result<()> {
         }
 
         Commands::Edit(edit) => {
-            if let Some(task) = todos.iter().find(|t| t.id == edit.id) {
-                let mut updated_task = task.clone();
-
+            if let Some(task) = todos.iter_mut().find(|t| t.id == edit.id) {
                 if let Some(name) = edit.name {
-                    updated_task.name = name;
+                    task.name = name;
                 }
 
                 if let Some(desc) = edit.description {
-                    updated_task.description = Some(desc);
+                    task.description = Some(desc);
                 }
 
                 if let Some(status) = edit.status {
-                    updated_task.done = matches!(status, command::Status::Done);
-                }
-
-                if let Some(pos) = todos.iter().position(|t| t.id == edit.id) {
-                    todos[pos] = updated_task;
+                    task.done = matches!(status, command::Status::Done);
                 }
             } else {
                 println!("Task with ID {} not found.", edit.id);
@@ -87,14 +81,8 @@ fn main() -> Result<()> {
         }
 
         Commands::Mark(mark) => {
-            if let Some(task) = todos.iter().find(|t| t.id == mark.id) {
-                let mut updated_task = task.clone();
-
-                updated_task.done = mark.status.is_none_or(|s| matches!(s, command::Status::Done));
-
-                if let Some(pos) = todos.iter().position(|t| t.id == mark.id) {
-                    todos[pos] = updated_task;
-                }
+            if let Some(task) = todos.iter_mut().find(|t| t.id == mark.id) {
+                task.done = mark.status.is_none_or(|s| matches!(s, command::Status::Done));
             } else {
                 println!("Task with ID {} not found.", mark.id);
             }
