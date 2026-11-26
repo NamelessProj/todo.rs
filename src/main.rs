@@ -32,7 +32,7 @@ struct AddTask {
     description: Option<String>,
 
     #[arg(long, default_value_t = false)]
-    is_done: bool,
+    done: bool,
 }
 
 #[derive(Args, Debug)]
@@ -41,7 +41,7 @@ struct ToggleTask {
     id: u32,
 
     #[arg(long)]
-    is_done: bool,
+    done: bool,
 }
 
 #[derive(Args, Debug)]
@@ -77,13 +77,13 @@ struct Search {
 struct Task {
     id: u32,
     name: String,
-    is_done: bool,
+    done: bool,
     description: Option<String>,
 }
 
 impl fmt::Display for Task {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let mark = if self.is_done { "x" } else { " " };
+        let mark = if self.done { "x" } else { " " };
         write!(f, "[{}] #{} {}", mark, self.id, self.name)?;
 
         if let Some(desc) = &self.description {
@@ -104,7 +104,7 @@ fn main() -> Result<()> {
             let task = Task {
                 id: help::next_id(&todos),
                 name: add_task.task,
-                is_done: add_task.is_done,
+                done: add_task.done,
                 description: add_task.description,
             };
 
@@ -114,7 +114,7 @@ fn main() -> Result<()> {
         Commands::Toggle(toggle_task) => {
             if let Some(task) = todos.iter().find(|t| t.id == toggle_task.id) {
                 let mut updated_task = task.clone();
-                updated_task.is_done = toggle_task.is_done;
+                updated_task.done = toggle_task.done;
 
                 if let Some(pos) = todos.iter().position(|t| t.id == toggle_task.id) {
                     todos[pos] = updated_task;

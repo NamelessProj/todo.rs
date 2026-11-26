@@ -21,7 +21,7 @@ This gives you a `todo.rs` command. If you'd rather not install it, run it from 
 ```sh
 $ todo.rs add --task "Buy milk"
 $ todo.rs add --task "Write the report" --description "Due Friday"
-$ todo.rs toggle --id 1 --is-done
+$ todo.rs toggle --id 1 --done
 $ todo.rs show
 [x] #1 Buy milk
 [ ] #2 Write the report
@@ -39,18 +39,18 @@ Adding, toggling and removing print nothing when they work. Use `show` to see th
 ```sh
 todo.rs add -t "Call the dentist"
 todo.rs add -t "Call the dentist" -d "Ask about Tuesday"
-todo.rs add -t "Water the planr" --is-done      # already done
+todo.rs add -t "Water the planr" --done      # already done
 ```
 
 
 ### Mark A Task Done Or Not Done
 
 ```sh
-todo.rs toggle -i 1 --is-done       # done
-todo.rs toggle -i 1                 # not done
+todo.rs toggle -i 1 --done      # done
+todo.rs toggle -i 1             # not done
 ```
 
-Despite it's name, `toggle` doesn't flip the current state. It's sets it: with `--is-done` the task is done, without it the task is open again.
+Despite it's name, `toggle` doesn't flip the current state. It's sets it: with `--done` the task is done, without it the task is open again.
 
 
 ### Show Tasks
@@ -96,7 +96,7 @@ The file is created the first time you run a command that needs it. It looks lik
     {
         "id": 1,
         "name": "Buy milk",
-        "is_done": true,
+        "done": true,
         "description": null
     }
 ]
